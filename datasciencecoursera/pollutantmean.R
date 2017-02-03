@@ -1,42 +1,35 @@
 
 
-directory <- "./specdata"
-
-foo <- read.csv(paste0(dat, "/001.csv"))
-
-id <- 200
 
 
 # figure out the correct number of 0s to append
-get_zeros <- function(id) {
-  if (id < 10) {
+# return vector with "", "0", or "00"
+get_zeros <- function(file_num) {
+  if (file_num < 10) {
     ap <- "00"
-  } else if (id >= 10 & id < 100) {
+  } else if (file_num >= 10 & file_num < 100) {
     ap <- "0"
   } else {
     ap <- ""
   }
 }
 
-zeros <- get_zeros(200)
+x <- get_zeros(203)
 
-
-bar <- read.csv(paste0(directory, "/", zeros, id, ".csv"))
-
-bar <- as_tibble(bar)
-
-
+bar <- read.csv(paste0(directory, "/", get_zeros(200), 200, ".csv"))
+mean(bar$sulfate, na.rm = TRUE)
 
 
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-  read.csv(paste0(directory, "/00", id, ".csv"))
   out <- vector(length = length(id))
   for (i in seq_along(id)) {
-    out[[i]] <- mean(pollutant, na.rm = TRUE)
+    file <- read.csv(paste0(directory, "/", get_zeros(id), id, ".csv"))
+    out[[i]] <- mean(file$pollutant, na.rm = TRUE)
   }
   out
 }
 
-x <- pollutantmean(dat, "sulfate", 1:3)
+
+output <- pollutantmean("./specdata", "sulfate", 1:3)
 
 
