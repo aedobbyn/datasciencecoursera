@@ -15,14 +15,16 @@ get_zeros <- function(file_num) {
 
 # Calculate the mean of the pollutant column for each file
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-  out <- vector(length = length(id))
+  combined <- data.frame()
   for (i in seq_along(id)) {
     file <- readr::read_csv(paste0(directory, "/", get_zeros(i), i, ".csv"))
-    out[[i]] <- mean(file[[pollutant]], na.rm = TRUE)
+    combined <- rbind(combined, file)
+    out <- mean(combined[[pollutant]], na.rm = TRUE)
   }
   out
 }
 
-output <- pollutantmean(directory = "./specdata", pollutant = "sulfate", id = 1:332)
+output <- pollutantmean(directory = "./specdata", pollutant = "sulfate", id = 1:10)
 
+output
 
