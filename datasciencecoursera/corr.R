@@ -14,24 +14,25 @@ get_zeros <- function(file_num) {
 
 
 # Calculate the mean of the pollutant column for each file
-corr <- function(directory, threshold = 0, id = 1:332) {
+corr <- function(directory, threshold = 0) {
+  id <- 1:332
   out <- vector()
   for (i in seq_along(id)) {
     file <- readr::read_csv(paste0(directory, "/", get_zeros(i), i, ".csv"))
     complete_cases <- sum(complete.cases(file) == TRUE) 
       if (complete_cases > threshold) {
         this_cor <- cor(x = file[["sulfate"]], y = file[["nitrate"]], use = "complete.obs")
-        out <- rbind(out, this_cor)
       } else {
-        out <- 0
+        this_cor <- 0
       }
+    out <- rbind(out, this_cor)
   }
   as.vector(out)
 }
 
 
-cr <- corr(directory = "./specdata", threshold = 50, id = 1:3)
-cr
+cr <- corr(directory = "./specdata", threshold = 150)
+head(cr)
 
 
 
