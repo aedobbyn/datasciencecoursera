@@ -22,15 +22,17 @@ corr <- function(directory, threshold = 0, id = 1:332) {
       if (complete_cases > threshold) {
         this_cor <- cor(x = file[["sulfate"]], y = file[["nitrate"]], use = "complete.obs")
         out <- rbind(out, this_cor)
-        print(paste0("out = ", out))
       } else {
         out <- 0
       }
-    out
   }
+  as.vector(out)
 }
 
 
 cr <- corr(directory = "./specdata", threshold = 50, id = 1:3)
 cr
+
+
+
 
