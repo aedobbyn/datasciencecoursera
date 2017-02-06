@@ -19,17 +19,30 @@ x <- get_zeros(203)
 bar <- read.csv(paste0(directory, "/", get_zeros(200), 200, ".csv"))
 mean(bar$sulfate, na.rm = TRUE)
 
-
-pollutantmean <- function(directory, pollutant, id = 1:332) {
+foo <- function(directory, id = 1:3) {
   out <- vector(length = length(id))
   for (i in seq_along(id)) {
-    file <- read.csv(paste0(directory, "/", get_zeros(id), id, ".csv"))
-    out[[i]] <- mean(file$pollutant, na.rm = TRUE)
+    file <- readr::read_csv(paste0(directory, "/", get_zeros(i), i, ".csv"))
+    print(colnames(file))
+    # out[[i]] <- colnames(file)
   }
   out
 }
 
+foo("./specdata")
 
-output <- pollutantmean("./specdata", "sulfate", 1:3)
+
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+  out <- vector(length = length(id))
+  for (i in seq_along(id)) {
+    file <- readr::read_csv(paste0(directory, "/", get_zeros(i), i, ".csv"))
+    out[[i]] <- mean(file[[pollutant]], na.rm = TRUE)
+  }
+  out
+}
+
+# pollutantmean(directory = "./specdata", id = 101:113)
+
+output <- pollutantmean(directory = "./specdata", pollutant = "sulfate", id = 200:203)
 
 
